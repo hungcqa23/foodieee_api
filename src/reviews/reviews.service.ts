@@ -14,7 +14,23 @@ export class ReviewsService {
     private readonly courseRepository: Repository<Course>
   ) {}
   public async createReview(createReviewDto: CreateReviewDto) {
-    return await this.reviewRepository.save(createReviewDto);
+    const course = await this.courseRepository.findOneBy({
+      id: createReviewDto.course
+    });
+    if (!course) throw new HttpException('Course not found', 404);
+
+    const user = await this.reviewRepository.findOneBy({
+      id: createReviewDto.user
+    });
+    if (!user) throw new HttpException('User not found', 404);
+
+    const review = this.reviewRepository.create({
+      ...createReviewDto,
+      user,
+      course
+    });
+
+    return await this.reviewRepository.save(review);
   }
 
   public async getReviewsByCourseId(courseId: number) {

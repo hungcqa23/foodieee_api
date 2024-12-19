@@ -1,36 +1,37 @@
-import { Type } from 'class-transformer';
 import {
   IsArray,
   IsEnum,
   IsNumber,
   IsOptional,
-  IsString,
-  ValidateNested
+  IsString
 } from 'class-validator';
 import { TypeCourse } from 'src/courses/course.entity';
 
-export class CreateCourseDto {
-  @IsString()
-  title: string;
-
+export class UpdateCourseDto {
   @IsOptional()
   @IsString()
-  slug?: string;
+  title?: string;
 
   @IsOptional()
   @IsString()
   description?: string;
 
+  @IsOptional()
   @IsEnum(TypeCourse)
-  typeCourse: TypeCourse;
+  typeCourse?: TypeCourse;
 
+  @IsOptional()
   @IsNumber()
-  price: number;
+  quantity?: number;
 
+  @IsOptional()
+  @IsNumber()
+  price?: number;
+
+  @IsOptional()
   @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => String)
-  ingredient: string[];
+  @IsString({ each: true })
+  ingredients?: string[];
 
   @IsOptional()
   @IsString()

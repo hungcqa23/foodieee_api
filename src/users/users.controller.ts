@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   Req,
@@ -11,10 +12,11 @@ import {
 } from '@nestjs/common';
 import { LocalAuthenticationGuard } from 'src/common/guards/local-authentication.guard';
 import { RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { CreateUserDto } from 'src/users/dto/sign-up.dto';
 import { UsersService } from 'src/users/users.service';
 import { Response } from 'express';
 import { Role } from 'src/users/user.entity';
+import { UpdateUserDto } from 'src/users/dto/update-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -30,6 +32,20 @@ export class UsersController {
     };
   }
 
+  @Post()
+  async create(@Body() body: CreateUserDto) {
+    const data = await this.usersService.createUser(body);
+    return data;
+  }
+
+  @Patch('/current')
+  public async updateProfileUser(@Body() body: UpdateUserDto) {
+    return await this.usersService.updateProfileUser(
+      '9427ca8a-4ee8-42d9-ae85-2aa1b9300512',
+      body
+    );
+  }
+
   @Get('/:email')
   async findOneByEmail(@Param('email') email: string) {
     const data = await this.usersService.getUserByEmail(email);
@@ -39,10 +55,9 @@ export class UsersController {
     };
   }
 
-  @Post('')
-  async create(@Body() body: CreateUserDto) {
-    const data = await this.usersService.createUser(body);
-    return data;
+  @Post('/sign-up')
+  public async signUp(@Body() body: CreateUserDto) {
+    return this.usersService.createUser(body);
   }
 
   @Post('/login')

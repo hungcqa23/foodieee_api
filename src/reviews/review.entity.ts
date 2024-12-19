@@ -16,6 +16,9 @@ export class Review {
   @Column()
   text: string;
 
+  @Column()
+  rating: number;
+
   @OneToOne(() => User)
   @JoinColumn()
   user: User;

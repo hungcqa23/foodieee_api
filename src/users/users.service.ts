@@ -1,6 +1,7 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { CreateUserDto } from 'src/users/dto/sign-up.dto';
+import { UpdateUserDto } from 'src/users/dto/update-user.dto';
 import { Role, User } from 'src/users/user.entity';
 import { Repository } from 'typeorm';
 
@@ -46,5 +47,9 @@ export class UsersService {
     const payload = { sub: userId, fullName };
     // return await this.userRepository.signAccessToken(payload);
     return payload;
+  }
+
+  public async updateProfileUser(userId: string, body: UpdateUserDto) {
+    return await this.userRepository.update(userId, body);
   }
 }

@@ -15,9 +15,6 @@ export class Course {
   @Column()
   title: string;
 
-  @Column({ unique: true, nullable: true })
-  slug: string;
-
   @Column({ nullable: true })
   description: string;
 
@@ -26,13 +23,13 @@ export class Course {
     enum: TypeCourse,
     default: TypeCourse.MAIN_COURSE
   })
-  typeCourse: string;
+  typeCourse: TypeCourse;
 
-  @Column()
+  @Column({ type: 'float' })
   price: number;
 
-  @Column()
-  ingredient: string[];
+  @Column({ type: 'simple-array' })
+  ingredients: string[];
 
   @Column({ nullable: true })
   image: string;

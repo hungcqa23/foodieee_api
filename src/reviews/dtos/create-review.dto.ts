@@ -5,11 +5,14 @@ export class CreateReviewDto {
   @IsString()
   text: string;
 
-  @IsNotEmpty()
   @IsInt()
-  user_id: number;
+  rating: number;
 
   @IsNotEmpty()
   @IsInt()
-  course_id: number;
+  user: number;
+
+  @IsNotEmpty()
+  @IsInt()
+  course: number;
 }
