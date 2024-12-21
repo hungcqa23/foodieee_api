@@ -17,7 +17,7 @@ export enum Role {
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Column('text')
   @IsNotEmpty({ message: 'Name is required' })

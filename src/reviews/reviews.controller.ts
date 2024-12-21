@@ -8,7 +8,12 @@ export class ReviewsController {
 
   @Post()
   public async createReview(@Body() createReviewDto: CreateReviewDto) {
-    return this.reviewService.createReview(createReviewDto);
+    const data = await this.reviewService.createReview(createReviewDto);
+
+    return {
+      status: 'success',
+      data
+    };
   }
 
   @Get('/:courseId')

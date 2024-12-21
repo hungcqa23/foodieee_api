@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { User } from 'src/users/user.entity';
 import { Course } from 'src/courses/course.entity';
+import { Max, Min } from 'class-validator';
 
 @Entity()
 export class Review {
@@ -17,6 +18,8 @@ export class Review {
   text: string;
 
   @Column()
+  @Max(5)
+  @Min(1)
   rating: number;
 
   @OneToOne(() => User)

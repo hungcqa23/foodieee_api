@@ -13,7 +13,7 @@ export class UsersService {
 
   public async findAll(type?: Role) {
     return await this.userRepository.find({
-      where: { role: type }
+      where: { role: type || Role.USER }
     });
   }
 
@@ -39,11 +39,11 @@ export class UsersService {
     return user;
   }
 
-  public async getUserById(id: number) {
+  public async getUserById(id: string) {
     return await this.userRepository.findOneBy({ id });
   }
 
-  public async signAccessToken(userId: number, fullName: string) {
+  public async signAccessToken(userId: string, fullName: string) {
     const payload = { sub: userId, fullName };
     // return await this.userRepository.signAccessToken(payload);
     return payload;
