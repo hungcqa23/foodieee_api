@@ -60,8 +60,8 @@ export class UsersController {
     return this.usersService.createUser(body);
   }
 
-  @Post('/login')
   @UseGuards(LocalAuthenticationGuard)
+  @Post('/login')
   async login(@Req() req: RequestWithUser, @Res() res: Response) {
     const { user } = req;
     const token = await this.usersService.signAccessToken(

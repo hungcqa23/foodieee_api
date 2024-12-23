@@ -36,6 +36,16 @@ export class CoursesController {
     };
   }
 
+  @Get('statistic')
+  public async getStatistic() {
+    const data = await this.courseService.getStatistic();
+
+    return {
+      status: 'success',
+      data
+    };
+  }
+
   @Get('/:courseId')
   public async getCourseById(@Param('courseId') courseId: number) {
     const data = await this.courseService.getCourseById(courseId);

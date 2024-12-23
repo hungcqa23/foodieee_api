@@ -16,12 +16,13 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt-access') {
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
-        (req: Request) => req.body?.accessToken
+        (req: Request) => {
+          return req.headers?.authorization.split(' ')[1];
+        }
       ]),
       secretOrKey: configService.get<string>('JWT_ACCESS_TOKEN_SECRET')
     });
   }
-
   async validate(tokenPayload: TokenPayLoad) {
     const user = await this.usersService.getUserById(tokenPayload.sub);
     if (!user) throw new UnauthorizedException();

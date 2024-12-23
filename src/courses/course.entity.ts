@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Review } from 'src/reviews/review.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum TypeCourse {
   MAIN_COURSE = 'main_course',
@@ -33,4 +34,10 @@ export class Course {
 
   @Column({ nullable: true })
   image: string;
+
+  @Column({ type: 'int', nullable: true })
+  quantity: number;
+
+  @OneToMany(() => Review, review => review.course)
+  reviews: Review[];
 }

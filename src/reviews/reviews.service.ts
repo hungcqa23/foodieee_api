@@ -16,20 +16,15 @@ export class ReviewsService {
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>
   ) {}
-  public async createReview(createReviewDto: CreateReviewDto) {
+  public async createReview(user: User, createReviewDto: CreateReviewDto) {
     const course = await this.courseRepository.findOneBy({
       id: createReviewDto.course
     });
     if (!course) throw new HttpException('Course not found', 404);
 
-    const user = await this.usersRepository.findOneBy({
-      id: createReviewDto.user
-    });
-    if (!user) throw new HttpException('User not found', 404);
-
-    const foundReview = await this.reviewRepository.findOneBy({
-      user,
-      course
+    const foundReview = await this.reviewRepository.findOne({
+      where: { user: { id: user.id }, course: { id: course.id } },
+      relations: ['user', 'course'] // Ensure relations are loaded
     });
     if (foundReview) throw new HttpException('Review already exists', 409);
 
@@ -47,11 +42,22 @@ export class ReviewsService {
     if (!course) {
       throw new HttpException('Course not found', 404);
     }
-    const data = await this.reviewRepository.findBy({ course });
+    const data = await this.reviewRepository.find({
+      where: { course: { id: courseId } },
+      relations: ['user', 'course']
+    });
     if (!data) {
       throw new HttpException('Reviews not found', 404);
     }
 
     return data;
+  }
+
+  public async deleteReview(reviewId: number) {
+    const review = await this.reviewRepository.findOneBy({ id: reviewId });
+    if (!review) {
+      throw new HttpException('Review not found', 404);
+    }
+    return await this.reviewRepository.remove(review);
   }
 }

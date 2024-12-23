@@ -6,7 +6,16 @@ import {
   Length,
   Matches
 } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Cart } from 'src/carts/cart.entity';
+import { Order } from 'src/orders/order.entity';
+import { Review } from 'src/reviews/review.entity';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn
+} from 'typeorm';
 
 // Define the Role enum
 export enum Role {
@@ -55,4 +64,16 @@ export class User {
 
   @Column({ nullable: true })
   profileImage: string;
+
+  @OneToMany(() => Review, review => review.user)
+  reviews: Review[];
+
+  @OneToOne(() => Cart, cart => cart.user)
+  cart: Cart; // Establishes a one-to-one relationship with the Cart entity\
+
+  @OneToMany(() => Order, order => order.user)
+  orders: Order[]; // A user can place multiple orders
+
+  @Column({ default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
 }

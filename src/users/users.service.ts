@@ -4,11 +4,13 @@ import { CreateUserDto } from 'src/users/dto/sign-up.dto';
 import { UpdateUserDto } from 'src/users/dto/update-user.dto';
 import { Role, User } from 'src/users/user.entity';
 import { Repository } from 'typeorm';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    private jwtService: JwtService
   ) {}
 
   public async findAll(type?: Role) {
@@ -45,8 +47,11 @@ export class UsersService {
 
   public async signAccessToken(userId: string, fullName: string) {
     const payload = { sub: userId, fullName };
-    // return await this.userRepository.signAccessToken(payload);
-    return payload;
+    const token = this.jwtService.sign(payload, {
+      secret: process.env.JWT_ACCESS_TOKEN_SECRET
+    });
+
+    return token;
   }
 
   public async updateProfileUser(userId: string, body: UpdateUserDto) {

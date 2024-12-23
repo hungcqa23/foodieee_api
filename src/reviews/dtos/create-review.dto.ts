@@ -9,10 +9,6 @@ export class CreateReviewDto {
   rating: number;
 
   @IsNotEmpty()
-  @IsString()
-  user: string;
-
-  @IsNotEmpty()
   @IsInt()
   course: number;
 }

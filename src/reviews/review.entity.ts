@@ -1,10 +1,4 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  OneToOne,
-  JoinColumn
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { User } from 'src/users/user.entity';
 import { Course } from 'src/courses/course.entity';
 import { Max, Min } from 'class-validator';
@@ -22,11 +16,9 @@ export class Review {
   @Min(1)
   rating: number;
 
-  @OneToOne(() => User)
-  @JoinColumn()
+  @ManyToOne(() => User, user => user.reviews)
   user: User;
 
-  @OneToOne(() => Course)
-  @JoinColumn()
+  @ManyToOne(() => Course, course => course.reviews)
   course: Course;
 }
